@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bb_menu_main"
+        android:icon="@mipmap/ic_main_home"
+        android:title="@string/main_page" />
+    <item
+        android:id="@+id/bb_menu_gif"
+        android:icon="@mipmap/ic_main_gif"
+        android:title="@string/main_gif" />
+    <item
+        android:id="@+id/bb_menu_search"
+        android:icon="@mipmap/ic_main_search"
+        android:title="@string/main_search" />
+    <item
+        android:id="@+id/bb_menu_personal"
+        android:icon="@mipmap/ic_main_person"
+        android:title="@string/main_personal" />
+</menu>

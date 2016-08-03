@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">GoodPictures</string>
+
+    <!-- main -->
+    <string name="main_page">主页</string>
+    <string name="main_gif">动图</string>
+    <string name="main_search">搜索</string>
+    <string name="main_personal">个人</string>
+
+    <!-- error message -->
+    <string name="error_unable_handle">系统错误,请等待大嘴君/(ㄒoㄒ)/~~</string>
+
+
 </resources>
