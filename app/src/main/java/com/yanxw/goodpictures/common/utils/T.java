@@ -3,6 +3,8 @@ package com.yanxw.goodpictures.common.utils;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.yanxw.goodpictures.GPApplication;
+
 /**
  * Created by yanxinwei on 16/8/3.
  */
@@ -38,6 +40,15 @@ public class T {
     public static void showShort(Context context, int message) {
         if (null == sToast) {
             sToast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        } else {
+            sToast.setText(message);
+        }
+        sToast.show();
+    }
+
+    public static void showShort(int message) {
+        if (null == sToast) {
+            sToast = Toast.makeText(GPApplication.getInstance(), message, Toast.LENGTH_SHORT);
         } else {
             sToast.setText(message);
         }

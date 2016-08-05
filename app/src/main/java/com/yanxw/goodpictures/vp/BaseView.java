@@ -6,6 +6,6 @@ package com.yanxw.goodpictures.vp;
  */
 public interface BaseView {
 
-
+    void showError(int messageId);
 
 }

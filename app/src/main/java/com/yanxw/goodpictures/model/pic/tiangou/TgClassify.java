@@ -26,7 +26,7 @@ public class TgClassify implements Serializable{
      * title : 性感美女
      */
 
-    private List<TngouBean> tngou;
+    private List<Classify> tngou;
 
     public boolean isStatus() {
         return status;
@@ -36,15 +36,15 @@ public class TgClassify implements Serializable{
         this.status = status;
     }
 
-    public List<TngouBean> getTngou() {
+    public List<Classify> getTngou() {
         return tngou;
     }
 
-    public void setTngou(List<TngouBean> tngou) {
+    public void setTngou(List<Classify> tngou) {
         this.tngou = tngou;
     }
 
-    public static class TngouBean implements Serializable{
+    public static class Classify implements Serializable{
         private String description;
         private int id;
         private String keywords;
@@ -102,7 +102,7 @@ public class TgClassify implements Serializable{
 
         @Override
         public String toString() {
-            return "TngouBean{" +
+            return "Classify{" +
                     "description='" + description + '\'' +
                     ", id=" + id +
                     ", keywords='" + keywords + '\'' +
@@ -116,7 +116,7 @@ public class TgClassify implements Serializable{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (TngouBean bean : tngou) {
+        for (Classify bean : tngou) {
             sb.append(bean.toString());
             sb.append("\r\n");
         }

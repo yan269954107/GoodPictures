@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import com.yanxw.goodpictures.R;
 import com.yanxw.goodpictures.adapter.MainFragmentAdapter;
+import com.yanxw.goodpictures.adapter.PicListAdapter;
 import com.yanxw.goodpictures.ui.BaseActivity;
 
 public class MainActivity extends BaseActivity {
@@ -29,9 +31,19 @@ public class MainActivity extends BaseActivity {
 
         mBottomBar.setOnMenuTabClickListener(mListener);
 
+        initPictureHeight();
+
         mPager.setOffscreenPageLimit(MainFragmentAdapter.MAIN_FRAGMENT_COUNT);
         mPager.setAdapter(new MainFragmentAdapter(getSupportFragmentManager()));
         mPager.addOnPageChangeListener(mPageListener);
+
+
+    }
+
+    private void initPictureHeight() {
+        DisplayMetrics dm =getResources().getDisplayMetrics();
+        int width = dm.widthPixels;
+        PicListAdapter.PICTURE_HEIGHT = (int) (width / 2 * 1.5);
     }
 
     private OnMenuTabClickListener mListener = new OnMenuTabClickListener() {

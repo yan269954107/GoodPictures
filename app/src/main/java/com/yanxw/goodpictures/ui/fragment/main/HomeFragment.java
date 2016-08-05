@@ -19,6 +19,7 @@ import com.yanxw.goodpictures.ui.fragment.BaseFragment;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
@@ -28,6 +29,8 @@ import rx.schedulers.Schedulers;
  * create an instance of this fragment.
  */
 public class HomeFragment extends BaseFragment {
+
+//    private static final int VIEWPAGER_LIMIT_COUNT = 3;
 
     @BindView(R.id.tl_category)
     TabLayout mTabLayout;
@@ -67,8 +70,10 @@ public class HomeFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View contentView = super.onCreateView(inflater, container, savedInstanceState);
 
+//        mViewPager.setOffscreenPageLimit(VIEWPAGER_LIMIT_COUNT);
         TgRepository.getInstance().getCategory()
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<TgClassify>() {
                     @Override
                     public void call(TgClassify tgClassify) {
@@ -77,6 +82,7 @@ public class HomeFragment extends BaseFragment {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        throwable.printStackTrace();
                         T.showShort(getContext(), R.string.error_unable_handle);
                     }
                 });
@@ -87,8 +93,8 @@ public class HomeFragment extends BaseFragment {
         if (null != tgClassify && tgClassify.isStatus() && null != tgClassify.getTngou()) {
             String[] titles = new String[tgClassify.getTngou().size()];
             int i = 0;
-            for (TgClassify.TngouBean bean : tgClassify.getTngou()) {
-                mFragments.add(PicFlowFragment.newInstance(bean.getId() + ""));
+            for (TgClassify.Classify bean : tgClassify.getTngou()) {
+                mFragments.add(PicFlowFragment.newInstance(bean.getId()));
                 titles[i] = bean.getDescription();
                 i++;
             }
