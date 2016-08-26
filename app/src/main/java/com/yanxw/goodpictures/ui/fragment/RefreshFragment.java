@@ -27,12 +27,9 @@ public abstract class RefreshFragment extends BaseFragment implements RefreshVie
     @Override
     public void showRefresh() {
         if (mRefreshLayout != null) {
-            mRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    mRefreshLayout.setRefreshing(true);
-                    loadData();
-                }
+            mRefreshLayout.post(() -> {
+                mRefreshLayout.setRefreshing(true);
+                loadData();
             });
         }
     }

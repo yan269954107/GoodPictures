@@ -3,12 +3,14 @@ package com.yanxw.goodpictures.vp.pic;
 import com.yanxw.goodpictures.GPApplication;
 import com.yanxw.goodpictures.R;
 import com.yanxw.goodpictures.api.pic.tiangou.TianGouService;
-import com.yanxw.goodpictures.common.utils.T;
-import com.yanxw.goodpictures.model.pic.tiangou.TgList;
+import com.yanxw.goodpictures.common.utils.ToastUtils;
+import com.yanxw.goodpictures.common.utils.rx.RxSubscribe;
+import com.yanxw.goodpictures.common.utils.rx.RxUtils;
+import com.yanxw.goodpictures.model.pic.PicInfoList;
+import com.yanxw.goodpictures.repository.pic.PicRepository;
 import com.yanxw.goodpictures.vp.BasePresenter;
 
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -32,20 +34,30 @@ public class PicPresenter extends BasePresenter<PicFlowView>{
         TianGouService.getTianGouApi().getPicList(id, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<TgList>() {
-                    @Override
-                    public void call(TgList tgList) {
-                        if (tgList.isStatus()) {
-                            getView().refresh(tgList.getTngou());
-                        } else {
-                            T.showShort(R.string.error_request_failed);
-                        }
+                .subscribe(tgList -> {
+                    if (tgList.isStatus()) {
+//                        getView().refresh(tgList.getTngou());
+                    } else {
+                        ToastUtils.showShort(R.string.error_request_failed);
                     }
-                }, new Action1<Throwable>() {
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    ToastUtils.showShort(GPApplication.getInstance(), R.string.error_network);
+                });
+
+    }
+
+    public void loadData(String url) {
+
+        PicRepository.getInstance().getPicList(url)
+                .compose(RxUtils.getTransformer())
+                .subscribe(new RxSubscribe<PicInfoList>() {
                     @Override
-                    public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                        T.showShort(GPApplication.getInstance(), R.string.error_network);
+                    protected void _onNext(PicInfoList picList) {
+                        if (url.equals(picList.getNextPageUrl())) {
+                            picList.setNextPageUrl("");
+                        }
+                        getView().refresh(picList);
                     }
                 });
 

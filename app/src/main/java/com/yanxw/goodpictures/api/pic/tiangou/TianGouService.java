@@ -10,7 +10,7 @@ import retrofit2.Retrofit;
 public class TianGouService {
 
     private static final String TIANGOU_API_BASE = "http://www.tngou.net/tnfs/api/";
-    public static final String TIANGOU_IMG_BASE = "http://tnfs.tngou.net/image/";
+    public static final String TIANGOU_IMG_BASE = "http://tnfs.tngou.net/image";
 
     private static TianGouApi sTianGouApi;
 //    private static TianGouImgApi sTianGouImgApi;

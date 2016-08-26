@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.yanxw.goodpictures.R;
-import com.yanxw.goodpictures.model.pic.tiangou.TgList;
+import com.yanxw.goodpictures.model.pic.PicInfoList;
 
 import java.util.List;
 
@@ -25,9 +25,9 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.PicListH
     public static final int THUMBNAILS_WIDTH = 300;
     public static int PICTURE_HEIGHT = 450;
 
-    private List<TgList.PicturesInfo> mPicList;
+    private List<PicInfoList.PicInfo> mPicList;
 
-    public PicListAdapter(List<TgList.PicturesInfo> picList) {
+    public PicListAdapter(List<PicInfoList.PicInfo> picList) {
         mPicList = picList;
     }
 
@@ -39,13 +39,13 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.PicListH
 
     @Override
     public void onBindViewHolder(PicListHolder holder, int position) {
-        TgList.PicturesInfo picturesInfo = mPicList.get(position);
-        Uri uri = Uri.parse(picturesInfo.getThumbnailsUrl());
+        PicInfoList.PicInfo picInfo = mPicList.get(position);
+        Uri uri = Uri.parse(picInfo.getThumbUrl());
         ViewGroup.LayoutParams params = holder.mDraweeView.getLayoutParams();
         params.height = PICTURE_HEIGHT;
         holder.mDraweeView.setLayoutParams(params);
         holder.mDraweeView.setImageURI(uri);
-        holder.mTxtDes.setText(picturesInfo.getTitle());
+        holder.mTxtDes.setText(picInfo.getDescription());
     }
 
     @Override
@@ -73,8 +73,14 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.PicListH
         }
     }
 
-    public void replaceData(List<TgList.PicturesInfo> picList) {
+    public void replaceData(List<PicInfoList.PicInfo> picList) {
         mPicList = picList;
         notifyDataSetChanged();
     }
+
+    public void appendData(List<PicInfoList.PicInfo> picList) {
+        mPicList.addAll(picList);
+        notifyDataSetChanged();
+    }
+
 }

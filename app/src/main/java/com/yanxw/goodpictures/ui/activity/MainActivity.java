@@ -37,7 +37,6 @@ public class MainActivity extends BaseActivity {
         mPager.setAdapter(new MainFragmentAdapter(getSupportFragmentManager()));
         mPager.addOnPageChangeListener(mPageListener);
 
-
     }
 
     private void initPictureHeight() {
@@ -95,5 +94,11 @@ public class MainActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mBottomBar.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

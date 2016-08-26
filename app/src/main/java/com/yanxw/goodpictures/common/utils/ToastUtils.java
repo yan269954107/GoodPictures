@@ -9,7 +9,7 @@ import com.yanxw.goodpictures.GPApplication;
  * Created by yanxinwei on 16/8/3.
  */
 
-public class T {
+public class ToastUtils {
 
     private static Toast sToast;
 
@@ -29,6 +29,16 @@ public class T {
         }
         sToast.show();
 
+    }
+
+    public static void showShort(CharSequence sequence) {
+        if (sToast == null) {
+            sToast = Toast.makeText(GPApplication.getInstance(), sequence, Toast.LENGTH_SHORT);
+
+        } else {
+            sToast.setText(sequence);
+        }
+        sToast.show();
     }
 
     /**

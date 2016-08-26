@@ -1,9 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.yanxw.goodpictures"
@@ -18,23 +19,40 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    productFlavors {
+        develop {
+            minSdkVersion 21
+            applicationId "com.yanxw.goodpictures_dev"
+            versionCode 1
+            versionName "1.0_debug"
+            manifestPlaceholders = [ml_channel: "native_develop"]
+        }
+
+        official {
+            applicationId "com.yanxw.goodpictures"
+            versionCode 1
+            versionName "1.0"
+            manifestPlaceholders = [ml_channel: "native_release"]
+        }
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.1.1'
-
     compile 'com.jakewharton:butterknife:8.2.1'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
-
     compile 'com.orhanobut:logger:1.10'
     compile 'com.android.support:recyclerview-v7:24.1.1'
-
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
-
     //retrofit2
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
@@ -43,17 +61,19 @@ dependencies {
     //rxjava
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'io.reactivex:rxandroid:1.2.1'
+    //lambda
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'
     //okhttp
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
-
     //bottom-bar
     compile 'com.roughike:bottom-bar:1.4.0.1'
-
     //fresco
     compile 'com.facebook.fresco:fresco:0.12.0'
     // 支持 GIF 动图，需要添加
     compile 'com.facebook.fresco:animated-gif:0.12.0'
     //fresco support okhttp3
-    compile "com.facebook.fresco:imagepipeline-okhttp3:0.12.0"
+    compile 'com.facebook.fresco:imagepipeline-okhttp3:0.12.0'
+
+    compile 'org.jsoup:jsoup:1.9.2'
 }

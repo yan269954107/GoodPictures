@@ -11,17 +11,15 @@ import android.view.ViewGroup;
 
 import com.yanxw.goodpictures.R;
 import com.yanxw.goodpictures.adapter.PicCategoryAdapter;
-import com.yanxw.goodpictures.common.utils.T;
-import com.yanxw.goodpictures.model.pic.tiangou.TgClassify;
-import com.yanxw.goodpictures.repository.pic.TgRepository;
+import com.yanxw.goodpictures.common.utils.rx.RxSubscribe;
+import com.yanxw.goodpictures.common.utils.rx.RxUtils;
+import com.yanxw.goodpictures.model.pic.PicCategories;
+import com.yanxw.goodpictures.repository.pic.PicRepository;
 import com.yanxw.goodpictures.ui.fragment.BaseFragment;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,7 +40,6 @@ public class HomeFragment extends BaseFragment {
     private PicCategoryAdapter mCategoryAdapter;
 
     public HomeFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -71,31 +68,34 @@ public class HomeFragment extends BaseFragment {
         View contentView = super.onCreateView(inflater, container, savedInstanceState);
 
 //        mViewPager.setOffscreenPageLimit(VIEWPAGER_LIMIT_COUNT);
-        TgRepository.getInstance().getCategory()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<TgClassify>() {
+//        TgRepository.getInstance().getCategory()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(tgClassify -> {
+//                            processCategory(tgClassify);
+//                        },
+//                        throwable -> {
+//                            throwable.printStackTrace();
+//                            ToastUtils.showShort(getContext(), R.string.error_unable_handle);
+//                        });
+        PicRepository.getInstance().getPicCategories()
+                .compose(RxUtils.getTransformer())
+                .subscribe(new RxSubscribe<PicCategories>() {
                     @Override
-                    public void call(TgClassify tgClassify) {
-                        processCategory(tgClassify);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                        T.showShort(getContext(), R.string.error_unable_handle);
+                    protected void _onNext(PicCategories picCategories) {
+                        processCategory(picCategories);
                     }
                 });
         return contentView;
     }
 
-    private void processCategory(TgClassify tgClassify) {
-        if (null != tgClassify && tgClassify.isStatus() && null != tgClassify.getTngou()) {
-            String[] titles = new String[tgClassify.getTngou().size()];
+    private void processCategory(PicCategories picCategories) {
+        if (null != picCategories && null != picCategories.getCategories()) {
+            String[] titles = new String[picCategories.getCategories().size()];
             int i = 0;
-            for (TgClassify.Classify bean : tgClassify.getTngou()) {
-                mFragments.add(PicFlowFragment.newInstance(bean.getId()));
-                titles[i] = bean.getDescription();
+            for (PicCategories.PicCategory category : picCategories.getCategories()) {
+                mFragments.add(PicFlowFragment.newInstance(category.getUrl()));
+                titles[i] = category.getName();
                 i++;
             }
             mCategoryAdapter = new PicCategoryAdapter(getFragmentManager(), getContext(), mFragments, titles);
@@ -103,5 +103,20 @@ public class HomeFragment extends BaseFragment {
             mTabLayout.setupWithViewPager(mViewPager);
         }
     }
+
+//    private void processCategory(TgClassify tgClassify) {
+//        if (null != tgClassify && tgClassify.isStatus() && null != tgClassify.getTngou()) {
+//            String[] titles = new String[tgClassify.getTngou().size()];
+//            int i = 0;
+//            for (TgClassify.Classify bean : tgClassify.getTngou()) {
+//                mFragments.add(PicFlowFragment.newInstance(bean.getId()));
+//                titles[i] = bean.getDescription();
+//                i++;
+//            }
+//            mCategoryAdapter = new PicCategoryAdapter(getFragmentManager(), getContext(), mFragments, titles);
+//            mViewPager.setAdapter(mCategoryAdapter);
+//            mTabLayout.setupWithViewPager(mViewPager);
+//        }
+//    }
 
 }
