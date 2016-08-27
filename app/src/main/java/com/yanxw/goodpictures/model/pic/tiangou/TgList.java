@@ -1,6 +1,6 @@
 package com.yanxw.goodpictures.model.pic.tiangou;
 
-import com.yanxw.goodpictures.adapter.PicListAdapter;
+import com.yanxw.goodpictures.adapter.PicInfoListAdapter;
 import com.yanxw.goodpictures.api.pic.tiangou.TianGouService;
 
 import java.util.List;
@@ -147,7 +147,7 @@ public class TgList {
         }
 
         public String getThumbnailsUrl() {
-            return getUrl() + "_" + PicListAdapter.THUMBNAILS_WIDTH;
+            return getUrl() + "_" + PicInfoListAdapter.THUMBNAILS_WIDTH;
         }
     }
 }

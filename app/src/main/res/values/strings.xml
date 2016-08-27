@@ -14,5 +14,8 @@
     <string name="error_request_timeout">请求超时/(ㄒoㄒ)/~~,请重试</string>
     <string name="error_parse">解析错误/(ㄒoㄒ)/~~,请换源后重试</string>
 
+    <!--common-->
+    <string name="loading">正在加载...</string>
+
 
 </resources>

@@ -27,6 +27,9 @@
         <meta-data
             android:name="ml_channel"
             android:value="native"/>
+
+        <activity android:name=".ui.activity.pic.PicListActivity">
+        </activity>
     </application>
 
 </manifest>

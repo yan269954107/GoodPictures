@@ -10,8 +10,7 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import com.yanxw.goodpictures.R;
 import com.yanxw.goodpictures.adapter.MainFragmentAdapter;
-import com.yanxw.goodpictures.adapter.PicListAdapter;
-import com.yanxw.goodpictures.ui.BaseActivity;
+import com.yanxw.goodpictures.adapter.PicInfoListAdapter;
 
 public class MainActivity extends BaseActivity {
 
@@ -42,7 +41,7 @@ public class MainActivity extends BaseActivity {
     private void initPictureHeight() {
         DisplayMetrics dm =getResources().getDisplayMetrics();
         int width = dm.widthPixels;
-        PicListAdapter.PICTURE_HEIGHT = (int) (width / 2 * 1.5);
+        PicInfoListAdapter.PICTURE_HEIGHT = (int) (width / 2 * 1.5);
     }
 
     private OnMenuTabClickListener mListener = new OnMenuTabClickListener() {

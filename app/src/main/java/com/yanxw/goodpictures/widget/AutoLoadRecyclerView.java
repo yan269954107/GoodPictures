@@ -71,6 +71,11 @@ public class AutoLoadRecyclerView extends RecyclerView {
                 }
             }
         }
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
     }
 
 }

@@ -2,6 +2,7 @@ package com.yanxw.goodpictures.crawler;
 
 import com.yanxw.goodpictures.model.pic.PicCategories;
 import com.yanxw.goodpictures.model.pic.PicInfoList;
+import com.yanxw.goodpictures.model.pic.PicList;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -47,7 +48,7 @@ public class MiMiPageProcessor {
         }
     }
 
-    public PicInfoList getPicList(String url) {
+    public PicInfoList getPicInfoList(String url) {
         try {
             Document doc = Jsoup.connect(url).get();
             Elements links = doc.select(".photo").select("a[href]");
@@ -57,12 +58,32 @@ public class MiMiPageProcessor {
             for (int i = 0; i < size; i++) {
                 Element link = links.get(i);
                 Element img = imgs.get(i);
-                picList.addPicInfo(CrawlerUtils.getUrl(CommonCrawler.URL_MIMITUXIU, link.attr("href")),
+                picList.addPicInfo(CrawlerUtils.getUrl(url, link.attr("href")),
                         img.attr("src"), link.text());
             }
             Elements elements = doc.select("ul.page > a:contains(下一页)");
             if (elements != null && elements.size() > 0) {
-                picList.setNextPageUrl(CrawlerUtils.getUrl(CommonCrawler.URL_MIMITUXIU, elements.get(0).attr("href")));
+                picList.setNextPageUrl(CrawlerUtils.getUrl(url, elements.get(0).attr("href")));
+            } else {
+                picList.setNextPageUrl("");
+            }
+            return picList;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public PicList getPicList(String url) {
+        try {
+            PicList picList = new PicList();
+            Document doc = Jsoup.connect(url).get();
+            Elements imgs = doc.select("ul.file > img[src]");
+            for (Element element : imgs) {
+                picList.addPicDetail(CrawlerUtils.getUrl(url, element.attr("src")));
+            }
+            Elements els = doc.select("ul.image > a:contains(下一页)");
+            if (els != null && els.size() > 0) {
+                picList.setNextPageUrl(CrawlerUtils.getUrl(url, els.get(0).attr("href")));
             } else {
                 picList.setNextPageUrl("");
             }

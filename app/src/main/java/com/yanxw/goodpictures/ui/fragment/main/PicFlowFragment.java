@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yanxw.goodpictures.R;
-import com.yanxw.goodpictures.adapter.PicListAdapter;
+import com.yanxw.goodpictures.adapter.PicInfoListAdapter;
 import com.yanxw.goodpictures.model.pic.PicInfoList;
 import com.yanxw.goodpictures.ui.fragment.RefreshFragment;
 import com.yanxw.goodpictures.vp.pic.PicFlowView;
-import com.yanxw.goodpictures.vp.pic.PicPresenter;
+import com.yanxw.goodpictures.vp.pic.PicFlowPresenter;
 import com.yanxw.goodpictures.widget.AutoLoadRecyclerView;
 
 import java.util.ArrayList;
@@ -35,8 +35,8 @@ public class PicFlowFragment extends RefreshFragment implements PicFlowView{
     private static final String CATEGORY_URL = "category_url";
     private String mCategoryUrl;
     private String mNextPageUrl;
-    private PicPresenter mPicPresenter;
-    private PicListAdapter mAdapter;
+    private PicFlowPresenter mPicPresenter;
+    private PicInfoListAdapter mAdapter;
     private int page = 1;
 
     @BindView(R.id.rv_pic_flow)
@@ -86,13 +86,13 @@ public class PicFlowFragment extends RefreshFragment implements PicFlowView{
 
     private void init() {
         mRefreshLayout.setOnRefreshListener(this);
-        mPicPresenter = new PicPresenter();
+        mPicPresenter = new PicFlowPresenter();
         mPicPresenter.attachView(this);
 
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(DEFAULT_COLUMN,
                 StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(gridLayoutManager);
-        mAdapter = new PicListAdapter(new ArrayList<>());
+        mAdapter = new PicInfoListAdapter(getContext(), new ArrayList<>());
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLoadMoreListener(this);
 

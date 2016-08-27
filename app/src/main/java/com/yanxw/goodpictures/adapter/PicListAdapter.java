@@ -1,86 +1,71 @@
 package com.yanxw.goodpictures.adapter;
 
-import android.net.Uri;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.yanxw.goodpictures.R;
-import com.yanxw.goodpictures.model.pic.PicInfoList;
+import com.yanxw.goodpictures.model.pic.PicList;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.yanxw.goodpictures.adapter.PicInfoListAdapter.PICTURE_HEIGHT;
+
 /**
- * Created by yanxinwei on 16/8/5.
+ * PicListAdapter
+ * Created by yanxinwei on 16/8/26.
  */
 
 public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.PicListHolder> {
 
-    public static final int THUMBNAILS_WIDTH = 300;
-    public static int PICTURE_HEIGHT = 450;
+    private List<PicList.PicDetail> mPicDetails;
+    private Context mContext;
 
-    private List<PicInfoList.PicInfo> mPicList;
-
-    public PicListAdapter(List<PicInfoList.PicInfo> picList) {
-        mPicList = picList;
+    public PicListAdapter(Context context, List<PicList.PicDetail> picDetails) {
+        mContext = context;
+        mPicDetails = picDetails;
     }
 
     @Override
-    public PicListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new PicListHolder(LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.item_picture, parent, false));
+    public PicListAdapter.PicListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new PicListHolder(LayoutInflater.from(mContext).inflate(R.layout.item_picture_original,
+                parent, false));
     }
 
     @Override
-    public void onBindViewHolder(PicListHolder holder, int position) {
-        PicInfoList.PicInfo picInfo = mPicList.get(position);
-        Uri uri = Uri.parse(picInfo.getThumbUrl());
+    public void onBindViewHolder(PicListAdapter.PicListHolder holder, int position) {
+
         ViewGroup.LayoutParams params = holder.mDraweeView.getLayoutParams();
-        params.height = PICTURE_HEIGHT;
+        params.height = PICTURE_HEIGHT * 2;
         holder.mDraweeView.setLayoutParams(params);
-        holder.mDraweeView.setImageURI(uri);
-        holder.mTxtDes.setText(picInfo.getDescription());
+        holder.mDraweeView.setImageURI(mPicDetails.get(position).getPicUrl());
+
     }
 
     @Override
     public int getItemCount() {
-        return mPicList.size();
+        return mPicDetails.size();
     }
 
-    class PicListHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public void appendData(List<PicList.PicDetail> picDetails) {
+        mPicDetails.addAll(picDetails);
+        notifyDataSetChanged();
+    }
 
-        @BindView(R.id.sdv_pic)
+    class PicListHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.sdv_pic_original)
         SimpleDraweeView mDraweeView;
 
-        @BindView(R.id.txt_description)
-        TextView mTxtDes;
-
-        public PicListHolder(View itemView) {
+        PicListHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-
         }
     }
-
-    public void replaceData(List<PicInfoList.PicInfo> picList) {
-        mPicList = picList;
-        notifyDataSetChanged();
-    }
-
-    public void appendData(List<PicInfoList.PicInfo> picList) {
-        mPicList.addAll(picList);
-        notifyDataSetChanged();
-    }
-
 }
